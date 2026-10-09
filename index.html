@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Next Step: personalized learning recommendations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eaf1f4;--panel:#fff;--ink:#12263a;--mute:#5a6b7a;--line:#cbd8e0;--blue:#1f5fd6;--amber:#e8960f;--soft:#dce8fb;--ok:#1d7a4d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1b26;--panel:#16283a;--ink:#e6eef5;--mute:#9fb1c0;--line:#2a4056;--blue:#6b9bff;--amber:#f3b34a;--soft:#1d3555;--ok:#5fd09a}}
+:root[data-theme="dark"]{--bg:#0f1b26;--panel:#16283a;--ink:#e6eef5;--mute:#9fb1c0;--line:#2a4056;--blue:#6b9bff;--amber:#f3b34a;--soft:#1d3555;--ok:#5fd09a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;line-height:1.15}
+header,main{max-width:1150px;margin:0 auto;padding:0 20px}
+header{padding-top:32px;padding-bottom:12px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.02em;max-width:14ch}
+.tools{display:flex;flex-direction:column;gap:6px;align-items:flex-end;font-size:.9rem}
+#acct{display:flex;flex-wrap:wrap;gap:6px}
+input,select{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;max-width:100%}
+main{display:grid;grid-template-columns:330px 1fr;gap:24px;padding-bottom:60px}
+@media(max-width:850px){main{grid-template-columns:1fr}header{align-items:flex-start}.tools{align-items:flex-start}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+label,.lab{display:block;font-weight:600;font-size:.95rem;margin:14px 0 6px}
+#side select{width:100%}.row{display:flex;align-items:center;gap:10px;margin:8px 0}.row span{flex:1}.row select{width:140px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip,.tab{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:6px 14px;font:inherit;cursor:pointer}
+.chip[aria-pressed="true"],.tab[aria-selected="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:8px 0}.path b{min-width:130px}
+.path ol{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.path li{padding:3px 12px;border-radius:99px;border:1px solid var(--line);font-size:.85rem;color:var(--mute)}
+.path li.done{background:var(--ok);border-color:var(--ok);color:#fff}.path li.cur{border:2px solid var(--amber);color:var(--ink);font-weight:600}
+.rec{border:1px solid var(--line);border-left:6px solid var(--blue);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:var(--panel)}
+.rec.first{border-left-color:var(--amber);background:var(--soft)}.rec h3{font-size:1.1rem}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--mute);font-size:.9rem;margin:4px 0}
+.why{margin:6px 0 10px;font-size:.95rem}.fit{float:right;font-weight:700;color:var(--blue)}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.go,.go2,.sm{border-radius:8px;padding:7px 14px;font:600 .92rem inherit;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.go{background:var(--blue);color:#fff;border:0}.go2{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+.sm{background:transparent;color:var(--mute);border:1px solid var(--line);font-weight:400}
+.linkbtn{background:none;border:0;color:var(--blue);cursor:pointer;font:inherit;text-decoration:underline;padding:0}
+.locked{color:var(--mute);font-size:.92rem;margin:4px 0}
+.empty{padding:16px;border:1px dashed var(--line);border-radius:10px;color:var(--mute);margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}.stat b{display:block;font:800 1.8rem "Bricolage Grotesque",sans-serif;color:var(--blue)}.stat span{color:var(--mute);font-size:.9rem}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.filters input[type=search]{flex:1;min-width:160px}
+fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:10px 14px}legend{font-weight:600;padding:0 6px}
+.opt{font-weight:400;margin:4px 0}
+form.f{display:grid;gap:8px;max-width:460px;margin-bottom:24px}
+small{color:var(--mute)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+<h1>Find your next learning step.</h1>
+<div class="tools"><div id="acctbox"></div><div id="amsg" role="status"></div>
+<button class="linkbtn" data-theme>Switch light/dark</button></div>
+</header>
+<main>
+<aside class="panel" id="side" aria-label="Your profile"></aside>
+<section>
+<div class="tabs" role="tablist" aria-label="Sections">
+<button class="tab" role="tab" data-tab="you">For you</button>
+<button class="tab" role="tab" data-tab="browse">Browse</button>
+<button class="tab" role="tab" data-tab="quiz">Placement quiz</button>
+<button class="tab" role="tab" data-tab="dash">Dashboard</button>
+<button class="tab" role="tab" data-tab="admin">Add resources</button>
+</div>
+<div id="view" aria-live="polite"></div>
+</section>
+</main>
+<script>
+const LV=["Not started","Beginner","Basic","Intermediate","Advanced"];
+const BASE=["Python","Data analysis","Web development","Statistics","Machine learning","Mathematics"];
+const GOALS={"Become a data analyst":"Data analysis","Build websites":"Web development","Learn Python":"Python","Understand statistics":"Statistics","Start with machine learning":"Machine learning","Strengthen my math":"Mathematics"};
+const K="nextstep-v2",PY="Python",DA="Data analysis",WD="Web development",ST="Statistics",ML="Machine learning",MA="Mathematics";
+const kg="https://www.kaggle.com/learn/",kh="https://www.khanacademy.org/math/";
+// id,title,topic,level,format,hours,seed peer rate,prereqs,url (free, well-known sites: check links before sharing)
+const RES=[
+[1,"Kaggle Learn: Python",PY,1,"hands-on",5,.9,[],kg+"python"],
+[2,"Exercism: Python practice exercises",PY,2,"hands-on",6,.85,[[PY,1]],"https://exercism.org/tracks/python"],
+[3,"The official Python Tutorial",PY,2,"reading",6,.8,[[PY,1]],"https://docs.python.org/3/tutorial/"],
+[4,"Automate the Boring Stuff with Python",PY,3,"reading",12,.78,[[PY,2]],"https://automatetheboringstuff.com/"],
+[5,"Real Python: OOP and testing tutorials",PY,4,"reading",6,.74,[[PY,3]],"https://realpython.com/"],
+[6,"Kaggle Learn: Pandas",DA,1,"hands-on",4,.86,[[PY,1]],kg+"pandas"],
+[7,"Kaggle Learn: Data Visualization",DA,2,"hands-on",4,.82,[[PY,1]],kg+"data-visualization"],
+[8,"Kaggle Learn: Data Cleaning",DA,2,"hands-on",4,.8,[[PY,2]],kg+"data-cleaning"],
+[9,"Kaggle Learn: Intro to SQL",DA,2,"hands-on",3,.84,[],kg+"intro-to-sql"],
+[10,"Kaggle Learn: Advanced SQL",DA,3,"hands-on",4,.77,[[DA,2]],kg+"advanced-sql"],
+[11,"MDN: Learn web development",WD,1,"reading",8,.9,[],"https://developer.mozilla.org/en-US/docs/Learn_web_development"],
+[12,"freeCodeCamp: Responsive Web Design",WD,1,"hands-on",8,.87,[],"https://www.freecodecamp.org/"],
+[13,"The Modern JavaScript Tutorial",WD,2,"reading",15,.8,[[WD,1]],"https://javascript.info/"],
+[14,"The Odin Project: build real projects",WD,3,"hands-on",20,.76,[[WD,2]],"https://www.theodinproject.com/"],
+[15,"roadmap.sh: Backend developer roadmap",WD,4,"reading",10,.72,[[WD,3]],"https://roadmap.sh/backend"],
+[16,"Khan Academy: Statistics and probability",ST,1,"video",8,.88,[],kh+"statistics-probability"],
+[17,"Seeing Theory: visual probability",ST,2,"reading",3,.8,[[ST,1]],"https://seeing-theory.brown.edu/"],
+[18,"OpenIntro Statistics (free textbook)",ST,3,"reading",15,.75,[[ST,2]],"https://www.openintro.org/book/os/"],
+[19,"StatQuest: regression videos",ST,4,"video",6,.73,[[ST,3]],"https://statquest.org/video-index/"],
+[20,"Google Machine Learning Crash Course",ML,1,"video",10,.9,[],"https://developers.google.com/machine-learning/crash-course"],
+[21,"Kaggle Learn: Intro to Machine Learning",ML,2,"hands-on",3,.78,[[PY,2],[DA,1]],kg+"intro-to-machine-learning"],
+[22,"Kaggle Learn: Intermediate Machine Learning",ML,3,"hands-on",4,.74,[[ST,2],[ML,2]],kg+"intermediate-machine-learning"],
+[23,"Kaggle Titanic: predict survival",ML,4,"hands-on",12,.7,[[PY,3],[ML,3]],"https://www.kaggle.com/c/titanic"],
+[24,"Khan Academy: Arithmetic",MA,1,"video",5,.9,[],kh+"arithmetic"],
+[25,"Khan Academy: Algebra",MA,2,"video",8,.82,[[MA,1]],kh+"algebra"],
+[26,"Khan Academy: Calculus",MA,3,"video",10,.75,[[MA,2]],kh+"calculus-1"],
+[27,"Khan Academy: Linear algebra",MA,4,"video",12,.72,[[MA,3]],kh+"linear-algebra"]
+].map(a=>({id:a[0],title:a[1],topic:a[2],level:a[3],fmt:a[4],hrs:a[5],peer:a[6],pre:a[7],url:a[8]}));
+// placement quiz: 4 questions per topic, easiest first: [question, options, correct index]
+const QZ={
+[PY]:[["What does print(len([1,2,3])) show?",["2","3","[1,2,3]","Error"],1],["Which keyword defines a function?",["func","define","def","fn"],2],["What does [x*2 for x in range(3)] return?",["[0, 2, 4]","[2, 4, 6]","[0, 1, 2]","(0, 2, 4)"],0],["What does a decorator do?",["Wraps a function to add behavior","Deletes a function","Compiles code","Imports a module"],0]],
+[DA]:[["In pandas, a table of rows and columns is a...",["DataFrame","Tensor","Dict","Set"],0],["Which call counts missing values per column?",["df.isna().sum()","df.count_na","df.missing()","df.null()"],0],["In SQL, which clause filters grouped results?",["WHERE","HAVING","ORDER BY","LIMIT"],1],["To avoid data leakage, fit scalers on...",["the full dataset","training data only","test data only","labels"],1]],
+[WD]:[["Which tag makes a link?",["<link>","<a>","<href>","<url>"],1],["Which CSS property sets text color?",["font-color","text-color","color","fg"],2],["What does fetch() return?",["A Promise","A string","An array","Nothing"],0],["Which HTTP status means not found?",["200","301","404","500"],2]],
+[ST]:[["The median is the...",["middle value","most frequent value","average","largest value"],0],["Chance of two heads in a row with a fair coin?",["1/2","1/4","1/3","1/8"],1],["A small p-value suggests...",["the data is unlikely under the null","the null is proven","the effect is large","the sample is biased"],0],["R squared measures...",["share of variance explained","the slope","the p-value","the sample size"],0]],
+[ML]:[["Supervised learning uses...",["labeled data","no data","only rewards","only images"],0],["A train/test split is used to...",["check generalization","normalize data","add features","speed up training"],0],["Overfitting means the model...",["memorizes training noise","is too simple","trains too fast","has no features"],0],["Which metric suits imbalanced classes better than accuracy?",["F1 score","row count","epoch","mean"],0]],
+[MA]:[["What is 3/4 + 1/4?",["1","1/2","3/8","4"],0],["Solve 2x + 3 = 11.",["x = 3","x = 4","x = 7","x = 5"],1],["The derivative of x squared is...",["x","2x","x squared","2"],1],["A matrix times its inverse gives...",["the zero matrix","the identity matrix","itself","its transpose"],1]]
+};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl=u=>/^https?:\/\//i.test(u||"");
+let DB={users:{},cur:"Guest",custom:{topics:[],res:[]},theme:""},tab="you",QT="",QR="",F={q:"",t:"",l:"",f:"",h:""};
+try{Object.assign(DB,JSON.parse(localStorage.getItem(K)||"{}"))}catch(e){}
+const persist=()=>{try{localStorage.setItem(K,JSON.stringify(DB))}catch(e){}};
+const fresh=()=>({goal:"Learn Python",interests:[PY],skill:{},fmt:"any",hrs:5,done:[],fb:{},hash:""});
+const U=()=>DB.users[DB.cur]||(DB.users[DB.cur]=fresh());
+const topics=()=>[...BASE,...DB.custom.topics];
+const catalog=()=>[...RES,...DB.custom.res];
+const goalMap=()=>({...GOALS,...Object.fromEntries(DB.custom.topics.map(t=>["Learn "+t,t]))});
+const goalTopic=()=>goalMap()[U().goal]||PY;
+const sk=t=>U().skill[t]||0;
+const lvl=t=>LV[Math.floor(sk(t))];
+const missing=r=>(r.pre||[]).filter(([t,l])=>sk(t)<l);
+const qlevel=(t,a)=>{let L=0;for(let i=0;i<4;i++){if(a[i]===QZ[t][i][2])L=i+1;else break}return L};
+
+// ---- recommender ----
+function counts(){const c={};Object.values(DB.users).forEach(u=>(u.done||[]).forEach(d=>c[d.id]=(c[d.id]||0)+1));return c}
+function score(r,cn){const u=U(),g=goalTopic();
+  const topic=r.topic===g?1:u.interests.includes(r.topic)?.6:.15;
+  const fit=1-Math.min(Math.abs(r.level-(sk(r.topic)+1)),3)/3;
+  const fmt=u.fmt==="any"||u.fmt===r.fmt?1:.4, time=r.hrs<=u.hrs*2?1:.5;
+  const peer=.7*r.peer+.3*Math.min(1,(cn[r.id]||0)/Math.max(1,Object.keys(DB.users).length));
+  return .35*topic+.3*fit+.15*fmt+.1*time+.1*peer}
+function recs(k=5){const u=U(),cn=counts(),dn=u.done.map(d=>d.id);
+  const pool=catalog().filter(r=>!dn.includes(r.id)&&!u.fb[r.id]&&r.level>=Math.floor(sk(r.topic))&&!missing(r).length).map(r=>({r,s:score(r,cn)}));
+  const out=[];
+  while(out.length<k&&pool.length){ // greedy re-rank for variety of format and topic
+    pool.forEach(x=>x.a=x.s-.05*out.filter(o=>o.r.fmt===x.r.fmt).length-.03*out.filter(o=>o.r.topic===x.r.topic).length);
+    pool.sort((a,b)=>b.a-a.a);out.push(pool.shift())}
+  return out}
+function why(r){const u=U(),s=Math.floor(sk(r.topic)),p=[];
+  if(r.topic===goalTopic())p.push("it supports your goal");else if(u.interests.includes(r.topic))p.push("you're interested in "+r.topic.toLowerCase());
+  p.push(r.level===s+1?"it's the right next level after "+LV[s].toLowerCase():r.level<=s?"it reinforces what you know":"it's a stretch, but your prerequisites are covered");
+  if(u.fmt!=="any"&&u.fmt===r.fmt)p.push("it matches your preferred format");
+  if(r.hrs<=u.hrs)p.push("it fits in about one week at your pace");
+  return "Recommended because "+p.join(", ")+"."}
+function complete(id){const u=U(),C=catalog(),r=C.find(x=>x.id===id);if(!r||u.done.some(d=>d.id===id))return;
+  u.done.push({id,ts:Date.now()});
+  const n=C.filter(x=>x.topic===r.topic&&x.level===r.level).length; // finishing every item at a level completes it
+  if(sk(r.topic)<r.level){let v=sk(r.topic)+1/n;if(v>r.level-.02)v=r.level;u.skill[r.topic]=Math.round(v*100)/100}}
+function rate(id,kind){const u=U(),r=catalog().find(x=>x.id===id);if(!r)return;u.fb[id]=kind;
+  if(kind==="easy")u.skill[r.topic]=Math.max(sk(r.topic),r.level);
+  if(kind==="hard")u.skill[r.topic]=Math.min(sk(r.topic),r.level-1)}
+function streak(){const days=new Set(U().done.map(d=>new Date(d.ts).toDateString()));let n=0,d=new Date();
+  if(!days.has(d.toDateString()))d.setDate(d.getDate()-1);
+  while(days.has(d.toDateString())){n++;d.setDate(d.getDate()-1)}return n}
+
+// ---- views ----
+const link=r=>safeUrl(r.url)?`<a class="go" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">Open resource</a>`:"";
+const meta=r=>`<div class="meta"><span>${esc(r.topic)}</span><span>${LV[r.level]} level</span><span>${r.fmt}</span><span>${r.hrs} h</span></div>`;
+function acct(){$("acctbox").innerHTML=DB.cur!=="Guest"?`Signed in as <b>${esc(DB.cur)}</b> <button class="linkbtn" data-signout>Sign out</button>`:
+  `<form id="acct"><input id="an" placeholder="Name" autocomplete="username" aria-label="Name" required size="10"><input id="ap" type="password" placeholder="Passcode (optional)" autocomplete="current-password" aria-label="Passcode" size="14"><button class="go">Sign in or create</button></form><small>Accounts live in this browser only.</small>`}
+function side(){const u=U(),T=topics(),G=goalMap();
+  $("side").innerHTML=`<h2>Your profile</h2><label for="goal">Main goal</label><select id="goal">${Object.keys(G).map(g=>`<option${g===u.goal?" selected":""}>${esc(g)}</option>`).join("")}</select>
+<div class="lab">Interests</div><div class="chips">${T.map(t=>`<button class="chip" data-int="${esc(t)}" aria-pressed="${u.interests.includes(t)}">${esc(t)}</button>`).join("")}</div>
+<div class="lab">Skill level (the quiz can set this for you)</div>${T.map(t=>`<div class="row"><span>${esc(t)}</span><select data-sk="${esc(t)}" aria-label="${esc(t)} skill level">${LV.map((l,j)=>`<option value="${j}"${j===Math.floor(sk(t))?" selected":""}>${l}</option>`).join("")}</select></div>`).join("")}
+<label for="fmt">Preferred format</label><select id="fmt">${[["any","No preference"],["video","Video"],["reading","Reading"],["hands-on","Hands-on practice"]].map(([v,l])=>`<option value="${v}"${u.fmt===v?" selected":""}>${l}</option>`).join("")}</select>
+<label for="hrs">Time per week</label><select id="hrs">${[[2,"About 2 hours"],[5,"About 5 hours"],[10,"10 hours or more"]].map(([v,l])=>`<option value="${v}"${+u.hrs===v?" selected":""}>${l}</option>`).join("")}</select>`}
+function foryou(){const u=U(),ts=[...new Set([goalTopic(),...u.interests])];
+  const path=ts.map(t=>`<div class="path"><b>${esc(t)}</b><ol>${[1,2,3,4].map(l=>{const s=sk(t),c=s>=l?"done":l===Math.floor(s)+1?"cur":"",p=c==="cur"&&s%1?` ${Math.round(s%1*100)}%`:"";return `<li class="${c}">${LV[l]}${p}</li>`}).join("")}</ol></div>`).join("");
+  const R=recs();
+  const cards=R.length?R.map(({r,s},i)=>`<article class="rec${i?"":" first"}"><span class="fit">${Math.round(s*100)}% match</span><h3>${esc(r.title)}</h3>${meta(r)}<p class="why">${why(r)}</p><div class="acts">${link(r)}<button class="go2" data-done="${r.id}">Mark completed</button><button class="sm" data-rate="easy" data-id="${r.id}">Too easy</button><button class="sm" data-rate="hard" data-id="${r.id}">Too hard</button><button class="sm" data-rate="no" data-id="${r.id}">Not interested</button></div></article>`).join(""):`<div class="empty">Nothing ready for your current profile. Raise a skill level, add an interest, or restore hidden items on the Dashboard.</div>`;
+  const wanted=[goalTopic(),...u.interests],dn=u.done.map(d=>d.id);
+  const lk=catalog().filter(r=>!dn.includes(r.id)&&!u.fb[r.id]&&missing(r).length&&wanted.includes(r.topic)).slice(0,4);
+  return `<div class="panel"><h2 style="margin-bottom:8px">Your learning paths</h2>${path}</div><h2 style="margin:20px 0 12px">Recommended for you</h2>${cards}`+(lk.length?`<h3 style="margin:20px 0 8px">Coming up once you build these skills</h3>`+lk.map(r=>`<p class="locked"><b>${esc(r.title)}</b> needs ${missing(r).map(([t,l])=>esc(t)+" at "+LV[l].toLowerCase()).join(" and ")}.</p>`).join(""):"")}
+function browse(){const opt=(v,l,cur)=>`<option value="${esc(v)}"${String(cur)===String(v)?" selected":""}>${esc(l)}</option>`;
+  return `<div class="filters"><input id="fq" type="search" placeholder="Search resources" aria-label="Search resources" value="${esc(F.q)}"><select id="ft" aria-label="Topic">${opt("","All topics",F.t)}${topics().map(t=>opt(t,t,F.t)).join("")}</select><select id="fl" aria-label="Level">${opt("","Any level",F.l)}${[1,2,3,4].map(l=>opt(l,LV[l],F.l)).join("")}</select><select id="ff" aria-label="Format">${opt("","Any format",F.f)}${["video","reading","hands-on"].map(f=>opt(f,f,F.f)).join("")}</select><input id="fh" type="number" min="1" placeholder="Max hours" aria-label="Maximum hours" value="${esc(F.h)}" style="width:120px"></div><div id="bres"></div>`}
+function bres(){const dn=U().done.map(d=>d.id),q=F.q.toLowerCase();
+  const L=catalog().filter(r=>(!q||(r.title+" "+r.topic).toLowerCase().includes(q))&&(!F.t||r.topic===F.t)&&(!F.l||r.level==F.l)&&(!F.f||r.fmt===F.f)&&(!F.h||r.hrs<=+F.h));
+  $("bres").innerHTML=`<p>${L.length} resources</p>`+L.map(r=>`<article class="rec"><h3>${esc(r.title)}</h3>${meta(r)}${missing(r).length?`<p class="locked">Needs ${missing(r).map(([t,l])=>esc(t)+" at "+LV[l].toLowerCase()).join(" and ")}.</p>`:""}<div class="acts">${link(r)}${dn.includes(r.id)?`<span style="color:var(--ok);font-weight:600;padding:7px 0">Completed</span>`:`<button class="go2" data-done="${r.id}">Mark completed</button>`}</div></article>`).join("")||`<div class="empty">No resources match these filters.</div>`}
+function quiz(){const T=topics().filter(t=>QZ[t]);if(!QZ[QT])QT=T[0];
+  return `<p>Four questions, easiest first. Your starting level is the highest level you answer correctly in a row. Topics you add yourself have no quiz, so set those levels by hand.</p><label for="qtopic">Topic</label><select id="qtopic">${T.map(t=>`<option${t===QT?" selected":""}>${esc(t)}</option>`).join("")}</select><form id="qform" style="margin-top:14px">${QZ[QT].map((q,i)=>`<fieldset><legend>${i+1}. ${esc(q[0])}</legend>${q[1].map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}" required> ${esc(o)}</label>`).join("")}</fieldset>`).join("")}<button class="go">Score my answers</button></form><div id="qres" role="status">${QR}</div>`}
+function dash(){const u=U(),C=catalog(),done=u.done.map(d=>({...d,r:C.find(x=>x.id===d.id)})).filter(d=>d.r);
+  const hrs=done.reduce((a,d)=>a+d.r.hrs,0),wk=done.filter(d=>Date.now()-d.ts<6048e5).length;
+  return `<div class="stats">${[["Completed",done.length],["Hours studied",hrs],["Day streak",streak()],["Done this week",wk]].map(([l,v])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("")}</div>
+<h3 style="margin-bottom:8px">Completed</h3>${done.length?done.slice().reverse().map(d=>`<p class="locked"><b>${esc(d.r.title)}</b> on ${new Date(d.ts).toLocaleDateString()}</p>`).join(""):`<div class="empty">Nothing completed yet. Finish a recommended resource to start your streak.</div>`}
+<h3 style="margin:20px 0 8px">Your data</h3><p>${Object.keys(u.fb).length} recommendations hidden by your feedback. <button class="linkbtn" data-restore>Restore them</button></p><p><button class="linkbtn" data-reset>Reset my progress</button></p>`}
+function admin(){const T=topics();
+  return `<p>Anything you add here is stored in this browser only. It appears in recommendations and Browse for everyone who uses this browser.</p>
+<h3>Add a topic</h3><form class="f" id="addtopic"><input id="nt" placeholder="Topic name, for example Spanish" aria-label="Topic name" required maxlength="40"><button class="go">Add topic</button></form>
+<h3>Add a resource</h3><form class="f" id="addres"><input id="rt" placeholder="Title" aria-label="Title" required maxlength="100"><select id="rp" aria-label="Topic">${T.map(t=>`<option>${esc(t)}</option>`).join("")}</select><select id="rl" aria-label="Level">${[1,2,3,4].map(l=>`<option value="${l}">${LV[l]}</option>`).join("")}</select><select id="rf" aria-label="Format"><option>video</option><option>reading</option><option>hands-on</option></select><input id="rh" type="number" min="1" max="200" value="5" aria-label="Hours"><input id="ru" type="url" placeholder="https://link-to-the-resource" aria-label="Link"><button class="go">Add resource</button></form>
+<h3 style="margin-bottom:8px">Your added resources</h3>${DB.custom.res.map(r=>`<p class="locked"><b>${esc(r.title)}</b> (${esc(r.topic)}, ${LV[r.level]}) <button class="linkbtn" data-delres="${r.id}">Remove</button></p>`).join("")||`<div class="empty">None yet.</div>`}`}
+function render(){persist();acct();side();
+  document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+  $("view").innerHTML=({you:foryou,browse,quiz,dash,admin})[tab]();
+  if(tab==="browse")bres()}
+const msg=t=>{$("amsg").textContent=t};
+async function H(s){if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}return String([...s].reduce((a,c)=>(a*31+c.charCodeAt(0))|0,7))}
+
+// ---- events ----
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;const d=t.dataset;
+  if(d.tab)tab=d.tab;
+  else if(d.int!==undefined){const u=U();u.interests=u.interests.includes(d.int)?u.interests.filter(x=>x!==d.int):[...u.interests,d.int]}
+  else if(d.done)complete(+d.done);
+  else if(d.rate)rate(+d.id,d.rate);
+  else if(d.restore)U().fb={};
+  else if(d.reset){if(!confirm("Reset your skills, completed items, and hidden items?"))return;Object.assign(U(),{skill:{},done:[],fb:{}})}
+  else if(d.delres)DB.custom.res=DB.custom.res.filter(r=>r.id!==+d.delres);
+  else if(d.signout){DB.cur="Guest";msg("")}
+  else if(d.theme!==undefined){const de=document.documentElement,dark=de.dataset.theme?de.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;DB.theme=de.dataset.theme=dark?"light":"dark"}
+  else return;
+  render()});
+document.addEventListener("change",e=>{const el=e.target,u=U();
+  if(el.id==="goal")u.goal=el.value,u.interests.includes(goalMap()[el.value])||u.interests.push(goalMap()[el.value]);
+  else if(el.id==="fmt")u.fmt=el.value;
+  else if(el.id==="hrs")u.hrs=+el.value;
+  else if(el.dataset.sk)u.skill[el.dataset.sk]=+el.value;
+  else if(el.id==="qtopic"){QT=el.value;QR=""}
+  else return;
+  render()});
+document.addEventListener("input",e=>{const m={fq:"q",ft:"t",fl:"l",ff:"f",fh:"h"}[e.target.id];if(m){F[m]=e.target.value;bres()}});
+document.addEventListener("submit",async e=>{e.preventDefault();const id=e.target.id;
+  if(id==="acct"){const name=$("an").value.trim().slice(0,30),pin=$("ap").value,h=pin?await H(name+pin):"",ex=DB.users[name];
+    if(ex&&(ex.hash||"")!==h)return msg("That passcode doesn't match this name.");
+    if(!ex)DB.users[name]=Object.assign(fresh(),{hash:h});
+    DB.cur=name;msg("")}
+  else if(id==="qform"){const fd=new FormData(e.target),a=[0,1,2,3].map(i=>+fd.get("q"+i)),L=qlevel(QT,a),n=a.filter((x,i)=>x===QZ[QT][i][2]).length;
+    U().skill[QT]=L;QR=`<div class="empty">You answered ${n} of 4 correctly. Your ${esc(QT)} level is now <b>${LV[L]}</b>, and your recommendations have been updated.</div>`}
+  else if(id==="addtopic"){const t=$("nt").value.trim();if(t&&!topics().some(x=>x.toLowerCase()===t.toLowerCase()))DB.custom.topics.push(t)}
+  else if(id==="addres"){const u=$("ru").value.trim();DB.custom.res.push({id:Date.now(),title:$("rt").value.trim(),topic:$("rp").value,level:+$("rl").value,fmt:$("rf").value,hrs:Math.max(1,+$("rh").value||1),peer:.7,pre:[],url:safeUrl(u)?u:""})}
+  render()});
+if(DB.theme)document.documentElement.dataset.theme=DB.theme;
+if(location.search.includes("test")){const c=console.assert;
+  c(qlevel(PY,[1,2,0,0])===4,"quiz: all correct = Advanced");c(qlevel(PY,[1,0,0,0])===1,"quiz: stops at first miss");
+  c(missing(RES[3]).length===1,"prereq: Python 2 needed for item 4");console.log("self-tests finished")}
+render();
+</script>
+</body>
+</html>
